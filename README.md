@@ -16,7 +16,7 @@ The **DietNutrientComposition** sheet captures the calculated nutritional conten
 
 🥛 Production Data
 
-The **Milk** sheet includes milk yield and composition metrics like fat, protein, and lactose. The **BodyWeight** sheet tracks body weight measurements and, optionally, body condition score (BCS) across timepoints.
+The **Milk** sheet includes milk yield and composition metrics like fat, protein, and lactose. The **BodyWeight** sheet tracks body weight measurements.
 
 🌱 GreenFeed Data
 
