@@ -26,6 +26,6 @@ For projects using the GreenFeed system, **GreenFeedSettings** includes device c
 
 If emissions are measured in respiration chambers, the **RespirationChamberSettings** sheet details the equipment and setup parameters, while the **RespirationChamberMeasurement** sheet contains the resulting emission data for each animal and timepoint.
 
-Check out the Flowchart
+🔍 Check out the flowchart
 <img width="2613" height="1614" alt="image" src="https://github.com/user-attachments/assets/e9b7d687-eae1-4d55-83ce-a25ee0cfaf0c" />
 
