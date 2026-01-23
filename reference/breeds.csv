@@ -1,6 +1,0 @@
-id,display_name,synonyms,parent_id,notes,source_url,last_updated,status
-hol,Holstein,"Holstein-Friesian|Holstein Friesian",btaurus,"ICAR: HOL",,2025-08-28,active
-bsw,Brown Swiss,"Braunvieh",btaurus,"ICAR: BSW",,2025-08-28,active
-aan,Angus,"Aberdeen Angus|Black Angus",btaurus,"ICAR: AAN",,2025-08-28,active
-cha,Charolais,"Charolaise",btaurus,"ICAR: CHA",,2025-08-28,active
-rdc,Ayrshire,"Ayrshire Dairy Cow|Ayr",btaurus,"ICAR: RDC",,2025-08-28,active
