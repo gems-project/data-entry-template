@@ -3,10 +3,6 @@ title: "GEMS Data Entry Rollout – Contributor Instructions"
 author: "GEMS Coordination Team"
 date: "`r Sys.Date()`"
 output:
-  html_document:
-    toc: true
-    toc_depth: '2'
-    df_print: paged
   github_document:
     toc: true
     toc_depth: 2
