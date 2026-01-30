@@ -1,0 +1,85 @@
+---
+title: "ADF Fractions Reference"
+author: "GEMS Cornell"
+date: "`r format(Sys.Date())`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    df_print: paged
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,      # hides code
+  message = FALSE,   # hides messages
+  warning = FALSE    # hides warnings
+)
+```
+
+
+
+```{r}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(dplyr)
+library(gt)          # nice-looking tables
+```
+
+
+```{r}
+# ▶ Embedded ADF data (no CSV dependency)
+
+adf <- tibble::tibble(
+Abbreviation = c("ADF", "aADF", "ADFom", "aADFom"),
+`Full Name` = c(
+"Acid Detergent Fiber",
+"Amylase-treated Acid Detergent Fiber",
+"Ash-free Acid Detergent Fiber",
+"Amylase-treated, ash-free ADF"
+),
+Definition = c(
+"Residue after acid detergent extraction; includes cellulose and lignin.",
+"ADF determined with heat-stable α-amylase to remove starch contamination.",
+"ADF expressed on an organic matter basis (ash-free).",
+"ADF with α-amylase treatment and expressed ash-free."
+),
+`Notes / Usage` = c(
+"Related to digestibility; base measurement.",
+"More accurate; recommended when starch contamination is an issue.",
+"Corrects for residual mineral content.",
+"International standard (AOAC/ISO/ICAR)."
+)
+)
+
+
+```
+
+```{r}
+adf |>
+gt() |>
+tab_header(
+title = md("**Acid Detergent Fiber (ADF) Fractions**"),
+subtitle = "Standard terms used in the GEMS Data Entry Template"
+) |>
+tab_options(
+table.font.size = px(14),
+data_row.padding = px(6),
+table.width = pct(100),            # make table span full page width
+container.width = pct(100)         # remove scrolling in HTML
+) |>
+fmt_markdown(everything())
+
+
+```
+
+```{r}
+library(knitr)
+
+# Save table as Markdown so it displays directly in GitHub
+adf %>%
+  knitr::kable(format = "pipe") %>%
+  writeLines("reference/ADF_fractions.md")
+
+
