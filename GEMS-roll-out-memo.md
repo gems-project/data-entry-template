@@ -79,6 +79,8 @@ Each workbook includes a **“Checklist”** sheet to record progress.
 One of these must be indicated for **all sheets**, otherwise the data
 will not be processed.
 
+**Data entry should be completed within 30 days after you receive the Data Entry Workbook links.** Completion is defined by marking the **Status row for every sheet** as either `Completed` or `Not relevant` in the **Checklist** sheet.
+
 A **Notes** row is also available for leaving comments or questions for
 the coordination team.
 
