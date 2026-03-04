@@ -33,4 +33,5 @@ docs/
 po/*~
 # RStudio Connect folder
 rsconnect/
-
+# Roll out memo
+GEMS roll out memo.Rmd
