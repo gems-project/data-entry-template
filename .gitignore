@@ -35,3 +35,5 @@ po/*~
 rsconnect/
 # Roll out memo
 GEMS roll out memo.Rmd
+
+.env
