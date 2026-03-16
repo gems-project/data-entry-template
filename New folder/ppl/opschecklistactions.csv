@@ -1,9 +1,0 @@
-gateRunId,studyId,sequence,sheetName,action,reason,createdTsUtc
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised=1 but only template example rows (no real data),2026-03-05T00:47:33.730041+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T15:27:29.779763+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T20:12:22.825110+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T22:13:26.621820+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T20:56:30.652769+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T23:12:44.935396+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T20:17:47.963803+00:00
-20260305T004722Z,013,2,IntakeIntraday,set_checklist_in_progress,promised_data_issue,2026-03-05T03:14:55.979309+00:00
