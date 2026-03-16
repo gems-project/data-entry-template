@@ -1,0 +1,99 @@
+emailRunId,gateRunId,qcRunId,studyId,sequence,toEmail,ccEmails,dataManagerName,contributorName,contributorEmail,emailSubject,emailBody,coreDataStatus,promisedDataStatus,qcStatus,coreDataMessage,promisedDataMessage,qcMessage,ruleVersionUsed,workbookFile,workbookPath,createdTsUtc,fromEmail,replyTo,sendstatus,senttsutc,senderror
+20260308T230941Z,20260306T192657Z,20260306T153326Z,013,2,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Action required: promised data and/or QC issues,"Hello,
+
+Study ID: 013 | DUA Study #: 2 | Workbook: 013_PuchunNiu_2.xlsx
+
+Your study **passed the core data requirement check**, but additional issues remain before the study can be fully accepted.
+
+Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.
+
+Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).
+
+**Promised data issue(s):**
+- IntakeIntraday: only template example rows (no real data)
+You indicated in the DUA summary that you would contribute these datasets.
+
+Quality control (QC): PASS
+
+**Next steps**
+- Please correct the workbook by **2026-03-15**.
+- Sheets with missing promised data or QC issues will be set to 'In Progress'.
+- After corrections, update the sheet status to 'Completed' in the Checklist.
+- The workbook will then be processed again and you will receive a follow-up email.
+
+Thank you,
+
+GEMS Coordination Team",PASS,FAIL,PASS,OK,IntakeIntraday: only template example rows (no real data),OK,null,013_PuchunNiu_2.xlsx,null,2026-03-08T23:09:56.714034+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T23:19:50.580096Z,null
+20260308T222429Z,20260306T192657Z,20260306T153326Z,012,1,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Congratulations: your study passed validation and QC,"Hello,Study ID: 012 | DUA Study #: 1 | Workbook: 012_PuchunNiu_1.xlsx🎉 **Congratulations. Your study successfully passed all validation checks:**- Core data requirement check- Promised data validation- Quality control (QC) checksCore data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).Your study is now eligible for the **Gold layer** of the GEMS data pipeline.Gold studies are not reprocessed unless updates are detected in the workbook.Thank you for contributing data to the GEMS initiative.Best regards,GEMS Coordination Team",PASS,PASS,PASS,OK,OK,OK,null,012_PuchunNiu_1.xlsx,null,2026-03-08T22:25:00.874378+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:26:28.083852Z,null
+20260308T222429Z,20260306T192657Z,20260306T153326Z,013,2,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Action required: promised data and/or QC issues,"Hello,Study ID: 013 | DUA Study #: 2 | Workbook: 013_PuchunNiu_2.xlsxYour study **passed the core data requirement check**, but additional issues remain before the study can be fully accepted.Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).**Promised data issue(s):**- IntakeIntraday: only template example rows (no real data)You indicated in the DUA summary that you would contribute these datasets.Quality control (QC): PASS**Next steps**- Please correct the workbook by **2026-03-15**.- Sheets with missing promised data or QC issues will be set to 'In Progress'.- After corrections, update the sheet status to 'Completed' in the Checklist.- The workbook will then be processed again and you will receive a follow-up email.Thank you,GEMS Coordination Team",PASS,FAIL,PASS,OK,IntakeIntraday: only template example rows (no real data),OK,null,013_PuchunNiu_2.xlsx,null,2026-03-08T22:25:00.874378+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:26:36.942113Z,null
+20260308T224104Z,20260306T192657Z,20260306T153326Z,012,1,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Congratulations: your study passed validation and QC,"Hello,Study ID: 012 | DUA Study #: 1 | Workbook: 012_PuchunNiu_1.xlsx🎉 **Congratulations.** Your study successfully passed all validation checks:- Core data requirement check- Promised data validation- Quality control (QC) checksCore data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).Your study is now eligible for the **Gold layer** of the GEMS data pipeline. Gold studies are not reprocessed unless updates are detected in the workbook.Thank you for contributing data to the GEMS initiative.Best regards,GEMS Coordination Team",PASS,PASS,PASS,OK,OK,OK,null,012_PuchunNiu_1.xlsx,null,2026-03-08T22:41:12.150156+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:42:29.479653Z,null
+20260308T224104Z,20260306T192657Z,20260306T153326Z,013,2,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Action required: promised data and/or QC issues,"Hello,Study ID: 013 | DUA Study #: 2 | Workbook: 013_PuchunNiu_2.xlsxYour study **passed the core data requirement check**, but additional issues remain before the study can be fully accepted.Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).**Promised data issue(s):**- IntakeIntraday: only template example rows (no real data)You indicated in the DUA summary that you would contribute these datasets.Quality control (QC): PASS**Next steps**- Please correct the workbook by **2026-03-15**.- Sheets with missing promised data or QC issues will be set to 'In Progress'.- After corrections, update the sheet status to 'Completed' in the Checklist.- The workbook will then be processed again and you will receive a follow-up email.Thank you,GEMS Coordination Team",PASS,FAIL,PASS,OK,IntakeIntraday: only template example rows (no real data),OK,null,013_PuchunNiu_2.xlsx,null,2026-03-08T22:41:12.150156+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:42:35.575259Z,null
+20260308T224855Z,20260306T192657Z,20260306T153326Z,012,1,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Congratulations: your study passed validation and QC,"Hello,Study ID: 012 | DUA Study #: 1 | Workbook: 012_PuchunNiu_1.xlsx🎉 **Congratulations.** Your study successfully passed all validation checks:- Core data requirement check- Promised data validation- Quality control (QC) checksCore data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).Your study is now eligible for the **Gold layer** of the GEMS data pipeline. Gold studies are not reprocessed unless updates are detected in the workbook.Thank you for contributing data to the GEMS initiative.Best regards,GEMS Coordination Team",PASS,PASS,PASS,OK,OK,OK,null,012_PuchunNiu_1.xlsx,null,2026-03-08T22:49:01.859447+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:50:17.996267Z,null
+20260308T224855Z,20260306T192657Z,20260306T153326Z,013,2,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Action required: promised data and/or QC issues,"Hello,Study ID: 013 | DUA Study #: 2 | Workbook: 013_PuchunNiu_2.xlsxYour study **passed the core data requirement check**, but additional issues remain before the study can be fully accepted.Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).**Promised data issue(s):**- IntakeIntraday: only template example rows (no real data)You indicated in the DUA summary that you would contribute these datasets.Quality control (QC): PASS**Next steps**- Please correct the workbook by **2026-03-15**.- Sheets with missing promised data or QC issues will be set to 'In Progress'.- After corrections, update the sheet status to 'Completed' in the Checklist.- The workbook will then be processed again and you will receive a follow-up email.Thank you,GEMS Coordination Team",PASS,FAIL,PASS,OK,IntakeIntraday: only template example rows (no real data),OK,null,013_PuchunNiu_2.xlsx,null,2026-03-08T22:49:01.859447+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T22:50:24.306562Z,null
+20260308T225834Z,20260306T192657Z,20260306T153326Z,012,1,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Congratulations: your study passed validation and QC,"Hello,
+
+Study ID: 012 | DUA Study #: 1 | Workbook: 012_PuchunNiu_1.xlsx
+
+🎉 **Congratulations.** Your study successfully passed all validation checks:
+
+- Core data requirement check
+- Promised data validation
+- Quality control (QC) checks
+
+Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.
+
+Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).
+
+Your study is now eligible for the **Gold layer** of the GEMS data pipeline. Gold studies are not reprocessed unless updates are detected in the workbook.
+
+Thank you for contributing data to the GEMS initiative.
+
+Best regards,
+
+GEMS Coordination Team",PASS,PASS,PASS,OK,OK,OK,null,012_PuchunNiu_1.xlsx,null,2026-03-08T22:58:39.849648+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T23:00:51.445933Z,null
+20260308T225834Z,20260306T192657Z,20260306T153326Z,013,2,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Action required: promised data and/or QC issues,"Hello,
+
+Study ID: 013 | DUA Study #: 2 | Workbook: 013_PuchunNiu_2.xlsx
+
+Your study **passed the core data requirement check**, but additional issues remain before the study can be fully accepted.
+
+Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.
+
+Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).
+
+**Promised data issue(s):**
+- IntakeIntraday: only template example rows (no real data)
+You indicated in the DUA summary that you would contribute these datasets.
+
+Quality control (QC): PASS
+
+**Next steps**
+- Please correct the workbook by **2026-03-15**.
+- Sheets with missing promised data or QC issues will be set to 'In Progress'.
+- After corrections, update the sheet status to 'Completed' in the Checklist.
+- The workbook will then be processed again and you will receive a follow-up email.
+
+Thank you,
+
+GEMS Coordination Team",PASS,FAIL,PASS,OK,IntakeIntraday: only template example rows (no real data),OK,null,013_PuchunNiu_2.xlsx,null,2026-03-08T22:58:39.849648+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T23:00:56.825223Z,null
+20260308T230941Z,20260306T192657Z,20260306T153326Z,012,1,niupc1992@outlook.com,"pn287@cornell.edu,puchun.niu@nmbu.no",Puchun Niu,Puchun Niu,puchun.niu@nmbu.no,[GEMS] Congratulations: your study passed validation and QC,"Hello,
+
+Study ID: 012 | DUA Study #: 1 | Workbook: 012_PuchunNiu_1.xlsx
+
+🎉 **Congratulations.** Your study successfully passed all validation checks:
+
+- Core data requirement check
+- Promised data validation
+- Quality control (QC) checks
+
+Core data are the project-required data types and variables that are required by GEMS, as indicated (ticked) in the DUA attachment/table.
+
+Promised data are the additional datasets you indicated in the DUA summary you would contribute (beyond the core required items).
+
+Your study is now eligible for the **Gold layer** of the GEMS data pipeline. Gold studies are not reprocessed unless updates are detected in the workbook.
+
+Thank you for contributing data to the GEMS initiative.
+
+Best regards,
+
+GEMS Coordination Team",PASS,PASS,PASS,OK,OK,OK,null,012_PuchunNiu_1.xlsx,null,2026-03-08T23:09:56.714034+00:00,puchun.niu@gmail.com,puchun.niu@gmail.com,SENT,2026-03-08T23:19:38.724931Z,null
