@@ -11,23 +11,27 @@ This folder contains two scripts that connect to a **Databricks Delta Sharing** 
 
 ## 1. What you get from us
 
-We send you an **activation link**. Download the file it provides and save it as:
-
-**`config.share`**
+We send you the credential file itself — **`config.share`** — through a **private** channel (for example encrypted email or a secure file transfer). Save it **as delivered**; you do not need to download anything from a separate activation page.
 
 (You can rename it to **`config.json`** if you prefer — both names work.)
 
-**Important:** Save `config.share` (or `config.json`) in the **same folder** as `load_shared_table.py` and `load_shared_table.R` — the folder from which you run the script (see below).
+**Important:** Put `config.share` (or `config.json`) in the **same folder** as `load_shared_table.py` and `load_shared_table.R` — the folder from which you run the script (see below).
 
 ---
 
-## 2. You only need to download the config **once**
+## 2. You only need **one** `config.share` file
 
-The config file is **not a copy of the data**. It only holds:
+The config file is **not a copy of the data**. In practice it bundles **three things**:
 
-- the **server address** (endpoint),
-- your **access token**,
-- and which **share** you may read.
+- your **access token** (secret),
+- the server **endpoint** (where to connect),
+- and which **share(s)** you are allowed to use.
+
+You can think of it as:
+
+**`config.share` ≈ token + endpoint + access**
+
+With a valid file, the sharing client can **connect to the share**, **list tables** you are permitted to see, and **read or download** the table data. These scripts **do not** open a browser login or ask for a username and password — there is **no separate identity check** beyond the token embedded in the file.
 
 Think of it like this:
 
@@ -37,14 +41,14 @@ Think of it like this:
 
 When we **add new tables**, **update schemas**, or **append rows** to tables in the **same** share, you **do not** need a new file. The next time you run the script, it asks the server what tables exist **right now** and downloads the current data.
 
-You need a **new** download only in situations such as:
+You need a **new** `config.share` only in situations such as:
 
 - the **token expired** (we can set long lifetimes to reduce this),
 - we created a **new recipient** for you and issued **new** credentials,
 - we **rotated** your token for security,
 - or you were given access to a **different share** that requires a **different** profile.
 
-**Tip for our team:** keep one stable share (e.g. one share name) and add or update **tables** inside it, instead of creating a new share or new recipient for every change — that avoids forcing everyone to re-download configs.
+**Tip for our team:** keep one stable share (e.g. one share name) and add or update **tables** inside it, instead of creating a new share or new recipient for every change — that avoids forcing everyone to request new config files.
 
 ---
 
@@ -150,11 +154,15 @@ If you hit errors:
 
 1. Confirm **`config.share`** (or **`config.json`**) is in the **same folder** as the script you run, and that your terminal’s **current directory** is that folder (or use `setwd` in R).
 2. Check **internet** and any **VPN** or firewall rules.
-3. If the error mentions **401 / 403** or **expired**, ask us for a **new** activation file.
+3. If the error mentions **401 / 403** or **expired**, ask us for a **new** `config.share` file.
 4. Use an **AI assistant** (or your IDE’s AI) with the **full error message** and this README — that often speeds up debugging.
 
 ---
 
 ## 8. Security
 
-Treat **`config.share`** like a password. **Do not** commit it to GitHub or share it in public channels. Only share the **repository link** that contains these **scripts** and this **README**; each collaborator should receive their own credential file through a **private** channel.
+**Rule:** **Anyone who has your `config.share` can access the shared data** that credential was issued for — connect, list tables, and download — the same way anyone with an API key or database password can use that secret. There is **no extra login** inside these scripts; possession of the file is enough.
+
+**`config.share` is an access credential**, not the dataset itself. Treat it like a **password or API key**.
+
+**Do not** commit it to GitHub, post it in chat, or forward it casually. Publish only the **repository link** with these **scripts** and this **README**; give each collaborator their **own** `config.share` through a **private** channel when they need access.
