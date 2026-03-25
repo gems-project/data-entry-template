@@ -54,7 +54,13 @@ You need a **new** `config.share` only in situations such as:
 
 ## 3. How to run (after the config is in this folder)
 
-Open a terminal (PowerShell, Command Prompt, Terminal on Mac/Linux), **change directory** to this folder (the one that contains the scripts and `config.share`), then run **one** of the following.
+You can run the scripts in either of these ways:
+
+1. **Terminal** — Open a terminal (PowerShell, Command Prompt, Terminal on Mac/Linux), **change directory** to this folder (the one that contains the scripts and `config.share`), then run **one** of the commands below.
+
+2. **Code editor or IDE** — Open this folder in a **code editor** or **integrated development environment (IDE)** and run the script from there. Examples include **Visual Studio Code**, **Cursor**, **RStudio**, **PyCharm**, or **Jupyter**. In most of these tools you open the script file, set the working directory to this folder (or open the folder as the project root), then use **Run** / **Run Python File** / **Source** / **Run Cell** as your tool provides. The important part is the same: **`config.share` must live next to the script**, and the process’s **working directory** should be that folder when the script runs.
+
+Then run **one** of the following (from a terminal, or from the equivalent “run” action in your editor).
 
 ### Python
 
