@@ -49,7 +49,16 @@ az webapp restart --resource-group GEMS --name GEMS-API
 
 ## Zip deploy (PowerShell)
 
-From the **`API`** folder (do **not** include `.env`, `.venv`, `__pycache__`):
+From the **`API`** folder (do **not** include `.env`, `.venv`, `__pycache__`).
+
+**Minimal (first deploy):**
+
+```powershell
+cd API
+Compress-Archive -Force -Path main.py,requirements.txt,startup.sh,.deployment,.env.example -DestinationPath ..\gems-api.zip
+```
+
+**With optional files:**
 
 ```powershell
 cd "...\data-entry-template\API"
