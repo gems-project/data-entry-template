@@ -21,6 +21,7 @@ FastAPI service: clients send an **API key** in a header → the service returns
 11. [Troubleshooting](#11-troubleshooting)
 12. [Security checklist](#12-security-checklist)
 13. [PAT vs service principal](#13-pat-vs-service-principal)
+14. [Where commands run: Cloud Shell, Cursor, PowerShell, Portal](#14-where-commands-run-cloud-shell-cursor-powershell-portal)
 
 ---
 
@@ -264,6 +265,8 @@ az webapp deploy --resource-group YOUR_RG --name YOUR_APP --src-path .\gems-api.
 
 The **`.deployment`** file enables **`pip install -r requirements.txt`** during deployment on App Service.
 
+For the **exact sequence** used in this project (Cloud Shell vs local PowerShell, `az login` → `az account set` → startup → restart → deploy), see **[§14](#14-where-commands-run-cloud-shell-cursor-powershell-portal)**.
+
 ---
 
 ## 9. Phase E — Verify and hand off
@@ -329,6 +332,67 @@ Invoke-WebRequest -Uri "$base/export/goldanimalcharacteristics.csv" -Headers @{ 
 
 ---
 
+## 14. Where commands run: Cloud Shell, Cursor, PowerShell, Portal
+
+This section matches the workflow used for **GEMS-API**: what each command does, **where** it was run, and **what you can use instead**.
+
+### 14.1 Azure Cloud Shell (browser, inside Azure Portal)
+
+**Open it:** Portal top bar → **Cloud Shell** icon → choose **Bash** or **PowerShell**.
+
+**What we used it for (typical):** fixing the **active subscription**. If your default subscription is wrong (e.g. another department’s tenant), `az webapp` commands can fail with **Authorization failed** or target the wrong account. In Cloud Shell (or locally) you run:
+
+```bash
+az account set --subscription ed150bce-3150-4fe4-b9e9-557ade4ccef5
+```
+
+Replace the GUID with **your** subscription ID (`az account list -o table`). The ID here corresponded to **CALS BoviAnalytics** in our setup.
+
+**Alternatives (same outcome):**
+
+- **Azure Portal** → subscription filter (top bar) → select the correct subscription before using Portal features.
+- **Local PowerShell** after `az login`: same `az account set --subscription <id>`.
+
+**Deploying `gems-api.zip` from Cloud Shell:** possible only if the zip is **available inside Cloud Shell** (e.g. uploaded to Cloud Shell storage or fetched from a URL). In practice, **`az webapp deploy --src-path .\gems-api.zip`** is easiest from **your PC** in the folder that contains the zip.
+
+---
+
+### 14.2 Building `gems-api.zip` (Cursor terminal = PowerShell)
+
+The zip is **not** created by Azure; you build it on your machine. **Cursor’s integrated terminal** on Windows is still **PowerShell** — use the **`API`** directory (the folder that contains `main.py`).
+
+```powershell
+cd API
+$files = @('main.py','requirements.txt','startup.sh','.deployment','.env.example')
+if (Test-Path '.gitattributes') { $files += '.gitattributes' }
+if (Test-Path 'DEPLOY_AZURE.md') { $files += 'DEPLOY_AZURE.md' }
+if (Test-Path 'README.md') { $files += 'README.md' }
+Compress-Archive -Force -Path $files -DestinationPath ..\gems-api.zip
+```
+
+That writes **`gems-api.zip`** in the **parent** of `API` (e.g. repo root `data-entry-template`). Do **not** include `.env`, `.venv`, or `__pycache__`.
+
+**Alternatives:** zip the **same file list** manually in File Explorer (files must sit at the **root** of the zip, not inside a nested `API` folder); or use a CI pipeline that runs an equivalent archive step.
+
+---
+
+### 14.3 PowerShell session on your PC (ordered checklist)
+
+Run these from **Windows PowerShell** (or Cursor terminal). **Log in first**, **select subscription**, then configure and deploy the Web App. Replace `GEMS` / `GEMS-API` / subscription ID if yours differ.
+
+| Step | Command (example) | What it does | Alternatives |
+|------|-------------------|--------------|--------------|
+| 1 | `az version` | Confirms Azure CLI is installed and shows version. | Install from Microsoft docs if missing. |
+| 2 | `az login` | Opens browser sign-in; ties CLI to your Azure AD user. | Device code flow, service principal (`az login --service-principal`) for automation. |
+| 3 | `az account set --subscription ed150bce-3150-4fe4-b9e9-557ade4ccef5` | Makes all following `az` commands use **this** subscription. | Portal subscription picker; Cloud Shell same command. |
+| 4 | `az webapp config set --resource-group GEMS --name GEMS-API --startup-file "gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"` | Sets **how Linux starts your app** (Gunicorn + Uvicorn workers, bind `0.0.0.0:8000`). | Portal → Web App → **Configuration** → **General settings** → **Startup Command** (same one-liner or `bash startup.sh`). |
+| 5 | `az webapp restart --resource-group GEMS --name GEMS-API` | Restarts the site so config and code reload cleanly. | Portal → Web App → **Overview** → **Restart**; often automatic after saving **Configuration**. |
+| 6 | `cd` to folder containing `gems-api.zip`, then `az webapp deploy --resource-group GEMS --name GEMS-API --src-path .\gems-api.zip --type zip` | Uploads the zip; App Service extracts and runs build (`pip install` via `.deployment`). | VS Code **Azure App Service** extension deploy; Portal **Deployment Center**; **Kudu** zip deploy. |
+
+After step 6, open **`https://<default-domain>/docs`** from **Overview** (see §9).
+
+---
+
 ## Extra: Azure CLI quick reference
 
-Copy-paste snippets and alternative zip paths also live in **`DEPLOY_AZURE.md`** in this folder.
+Copy-paste snippets also live in **`DEPLOY_AZURE.md`** in this folder.

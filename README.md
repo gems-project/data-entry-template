@@ -29,3 +29,8 @@ If emissions are measured in respiration chambers, the **RespirationChamberSetti
 🔍 Check out the flowchart
 <img width="2613" height="1614" alt="image" src="https://github.com/user-attachments/assets/e9b7d687-eae1-4d55-83ce-a25ee0cfaf0c" />
 
+---
+
+## GEMS Gold Export API (Databricks CSV)
+
+REST API documentation, Azure deployment (including Cloud Shell vs PowerShell), zip packaging, and troubleshooting: **[API/README.md](API/README.md)** (also **`DEPLOY_AZURE.md`** in that folder for CLI quick reference).
