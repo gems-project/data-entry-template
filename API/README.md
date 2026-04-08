@@ -140,7 +140,7 @@ There is **no automatic sync** from GitHub to Azure Application settings unless 
 - **Databricks:** PAT (Settings → Developer → Access tokens) and a **SQL warehouse** you may use (**SQL → SQL Warehouses → Connection details**: host + HTTP path).
 - **Unity Catalog:** the PAT’s user (or service principal, if you switch later) needs **`SELECT`** on the gold tables you will list in `ALLOWED_TABLES`.
 - **Azure:** subscription and rights to create an **App Service** (Web App), Linux, Python 3.11+ (3.12 is fine).
-- **Optional:** [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) on your PC for zip deploy and `az webapp` commands (use the correct subscription: `az account set`).
+- **Optional:** [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) on your PC for zip deploy and `az webapp` commands (use the correct subscription: `az account set`). On **Windows**, the same PowerShell commands work in **Cursor’s integrated terminal** once **`az`** is on that terminal’s **`PATH`** (see **[§14.1](#141-cursor-on-windows-azure-cli-in-the-integrated-terminal)** if `az` works in PowerShell but not inside Cursor).
 
 ---
 
@@ -243,10 +243,17 @@ Click **Save** (app restarts). **Do not** put these values in git or in the depl
 
 Deploy so that **`main.py` is at the root of the site** (not inside a nested `API/API` folder). Include `requirements.txt`, `startup.sh` (if used), `.deployment`, and optionally `.env.example`, `.gitattributes`, `DEPLOY_AZURE.md`, `README.md`. **Exclude** `.venv`, `__pycache__`, and **`.env`**.
 
-**Example (PowerShell)** — from the **`API`** directory:
+**Minimal zip (this is what was used for the first GEMS-API deploy)** — run from the **`API`** directory in PowerShell or Cursor’s terminal. The archive name **`gems-api`** is only the filename in `-DestinationPath` (you could pick another name; `az webapp deploy` must point at that file).
 
 ```powershell
-cd "...\data-entry-template\API"
+cd API
+Compress-Archive -Force -Path main.py,requirements.txt,startup.sh,.deployment,.env.example -DestinationPath ..\gems-api.zip
+```
+
+**Extended zip (same core files, plus optional docs if present)** — useful when you want `.gitattributes`, `DEPLOY_AZURE.md`, and `README.md` inside the package:
+
+```powershell
+cd API
 $files = @('main.py','requirements.txt','startup.sh','.deployment','.env.example')
 if (Test-Path '.gitattributes') { $files += '.gitattributes' }
 if (Test-Path 'DEPLOY_AZURE.md') { $files += 'DEPLOY_AZURE.md' }
@@ -265,7 +272,7 @@ az webapp deploy --resource-group YOUR_RG --name YOUR_APP --src-path .\gems-api.
 
 The **`.deployment`** file enables **`pip install -r requirements.txt`** during deployment on App Service.
 
-For the **exact sequence** used in this project (Cloud Shell vs local PowerShell, `az login` → `az account set` → startup → restart → deploy), see **[§14](#14-where-commands-run-cloud-shell-cursor-powershell-portal)**.
+For the **exact sequence** used in this project (Cloud Shell vs local PowerShell vs **Cursor** terminal, `az login` → `az account set` → startup → restart → deploy), see **[§14](#14-where-commands-run-cloud-shell-cursor-powershell-portal)** — including **[§14.1](#141-cursor-on-windows-azure-cli-in-the-integrated-terminal)** if **`az`** is missing only inside Cursor.
 
 ---
 
@@ -336,7 +343,31 @@ Invoke-WebRequest -Uri "$base/export/goldanimalcharacteristics.csv" -Headers @{ 
 
 This section matches the workflow used for **GEMS-API**: what each command does, **where** it was run, and **what you can use instead**.
 
-### 14.1 Azure Cloud Shell (browser, inside Azure Portal)
+### 14.1 Cursor on Windows: Azure CLI in the integrated terminal
+
+On Windows, Cursor’s default integrated terminal is **PowerShell**. The same commands as in **standalone Windows PowerShell** apply: **`cd`**, **`Compress-Archive`**, **`az login`**, **`az webapp deploy`**, etc.
+
+If **`az`** works in PowerShell outside Cursor but **`az` is not recognized** inside Cursor, the editor often starts the terminal with a shorter **`PATH`**. Add the Azure CLI **`wbin`** folder to the integrated terminal’s environment (one-time):
+
+1. **Cursor** → **File** → **Preferences** → **Cursor Settings** → open **User settings (JSON)**  
+   (file path: `%APPDATA%\Cursor\User\settings.json`).
+2. Merge this (preserve other keys in the file):
+
+```json
+"terminal.integrated.env.windows": {
+    "PATH": "C:\\Program Files\\Microsoft SDKs\\Azure\\CLI2\\wbin;${env:PATH}"
+}
+```
+
+If Azure CLI is installed elsewhere, set the string to match the folder that contains **`az.cmd`** (from `Get-Command az` in a terminal where `az` already works).
+
+3. **Open a new terminal tab** in Cursor (or restart Cursor), then run **`az version`**.
+
+After that, you can run the full **§14.4** checklist from Cursor without using external PowerShell.
+
+---
+
+### 14.2 Azure Cloud Shell (browser, inside Azure Portal)
 
 **Open it:** Portal top bar → **Cloud Shell** icon → choose **Bash** or **PowerShell**.
 
@@ -357,9 +388,18 @@ Replace the GUID with **your** subscription ID (`az account list -o table`). The
 
 ---
 
-### 14.2 Building `gems-api.zip` (Cursor terminal = PowerShell)
+### 14.3 Building `gems-api.zip` (Cursor terminal = PowerShell)
 
 The zip is **not** created by Azure; you build it on your machine. **Cursor’s integrated terminal** on Windows is still **PowerShell** — use the **`API`** directory (the folder that contains `main.py`).
+
+**Minimal command (used for the first GEMS-API zip / deploy):**
+
+```powershell
+cd API
+Compress-Archive -Force -Path main.py,requirements.txt,startup.sh,.deployment,.env.example -DestinationPath ..\gems-api.zip
+```
+
+**Extended command (adds `.gitattributes`, `DEPLOY_AZURE.md`, `README.md` when those files exist):**
 
 ```powershell
 cd API
@@ -376,9 +416,9 @@ That writes **`gems-api.zip`** in the **parent** of `API` (e.g. repo root `data-
 
 ---
 
-### 14.3 PowerShell session on your PC (ordered checklist)
+### 14.4 PowerShell session on your PC (ordered checklist)
 
-Run these from **Windows PowerShell** (or Cursor terminal). **Log in first**, **select subscription**, then configure and deploy the Web App. Replace `GEMS` / `GEMS-API` / subscription ID if yours differ.
+Run these from **Windows PowerShell** or **Cursor’s integrated terminal** (same commands; if **`az`** fails only in Cursor, fix **`PATH`** per **[§14.1](#141-cursor-on-windows-azure-cli-in-the-integrated-terminal)**). **Log in first**, **select subscription**, then configure and deploy the Web App. Replace `GEMS` / `GEMS-API` / subscription ID if yours differ.
 
 | Step | Command (example) | What it does | Alternatives |
 |------|-------------------|--------------|--------------|
