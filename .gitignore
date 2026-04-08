@@ -37,3 +37,8 @@ rsconnect/
 GEMS roll out memo.Rmd
 
 .env
+
+token.json
+
+# Python API local env (folder name is API)
+API/.venv/
