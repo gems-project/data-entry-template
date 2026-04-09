@@ -111,7 +111,7 @@ flowchart TD
   AZCREATE --> STARTUP[Set startup: bash startup.sh OR Gunicorn one-liner]
   STARTUP --> APPVARS[Add Application settings env vars]
   APPVARS --> ZIP[Zip API files no .env no .venv]
-  ZIP --> DEPLOY[az webapp deploy or Portal zip]
+  ZIP --> DEPLOY[CLI / Kudu ZipDeploy / App Service extension]
   DEPLOY --> SAVE[Save settings Restart if needed]
   SAVE --> TEST[Test https default domain /docs /tables /export]
   TEST --> SHARE[Share URL + X-API-Key with collaborators]
@@ -128,7 +128,7 @@ flowchart TD
 | Startup command | **Portal** Configuration → General settings, or **`az webapp config set`** |
 | `DATABRICKS_*`, `GEMS_*`, `ALLOWED_TABLES`, `GEMS_API_KEY` | **Azure Portal** → Web App → **Environment variables** → App settings |
 | Build `gems-api.zip` | **PowerShell** from repo (see §8) |
-| Upload / deploy zip | **Azure CLI** `az webapp deploy` or Portal **Deployment Center** |
+| Upload / deploy zip | **§8:** **`az webapp deploy`**, **Kudu** **`/ZipDeploy`** or File Manager, or **Azure App Service** extension |
 | Confirm hostname | **Azure Portal** → Web App → **Overview** → **Default domain** (often `https://<name>-<suffix>.eastus-01.azurewebsites.net`) |
 
 There is **no automatic sync** from GitHub to Azure Application settings unless you add CI/CD (e.g. GitHub Actions + `az webapp config appsettings set`). For this project, **production config is edited in Azure**; keep **`.env.example`** updated in git as **documentation only** (no real secrets).
@@ -243,7 +243,7 @@ Click **Save** (app restarts). **Do not** put these values in git or in the depl
 
 Deploy so that **`main.py` is at the root of the site** (not inside a nested `API/API` folder). Include `requirements.txt`, `startup.sh` (if used), `.deployment`, and optionally `.env.example`, `.gitattributes`, `DEPLOY_AZURE.md`, `README.md`. **Exclude** `.venv`, `__pycache__`, and **`.env`**.
 
-**Minimal zip (this is what was used for the first GEMS-API deploy)** — run from the **`API`** directory in PowerShell or Cursor’s terminal. The archive name **`gems-api`** is only the filename in `-DestinationPath` (you could pick another name; `az webapp deploy` must point at that file).
+**Minimal zip (this is what was used for the first GEMS-API deploy)** — run from the **`API`** directory in PowerShell or Cursor’s terminal. The archive name **`gems-api`** is only the filename in `-DestinationPath` (you could pick another name; your deploy step — CLI, Kudu, or extension — must use that file).
 
 ```powershell
 cd API
@@ -263,16 +263,44 @@ Compress-Archive -Force -Path $files -DestinationPath ..\gems-api.zip
 
 **On Windows, if you use `startup.sh`:** keep **LF** line endings (this repo includes **`.gitattributes`** for `startup.sh`). CRLF can cause `bash` errors on Azure Linux.
 
-Deploy from the folder that contains **`gems-api.zip`**:
+Pick **one** way to push the zip after you build **`gems-api.zip`** (same zip contents for all options).
+
+### D.1 Azure CLI (local PowerShell or Cursor)
+
+From the folder that contains **`gems-api.zip`**:
 
 ```powershell
 cd "...\data-entry-template"
 az webapp deploy --resource-group YOUR_RG --name YOUR_APP --src-path .\gems-api.zip --type zip
 ```
 
-The **`.deployment`** file enables **`pip install -r requirements.txt`** during deployment on App Service.
+For **`az login`**, subscription selection, startup, and restart order, see **[§14](#14-where-commands-run-cloud-shell-cursor-powershell-portal)** — including **[§14.1](#141-cursor-on-windows-azure-cli-in-the-integrated-terminal)** if **`az`** is missing only inside Cursor.
 
-For the **exact sequence** used in this project (Cloud Shell vs local PowerShell vs **Cursor** terminal, `az login` → `az account set` → startup → restart → deploy), see **[§14](#14-where-commands-run-cloud-shell-cursor-powershell-portal)** — including **[§14.1](#141-cursor-on-windows-azure-cli-in-the-integrated-terminal)** if **`az`** is missing only inside Cursor.
+### D.2 Azure Portal + Kudu (no CLI on your PC)
+
+Use this when you prefer the browser only (after building **`gems-api.zip`** on your machine).
+
+1. **Azure Portal** → your **Web App** → **Development Tools** → **Advanced Tools** → **Go** (opens **Kudu**, URL contains **`.scm.`**).
+2. **Option A — Zip deploy URL:** in the browser go to  
+   **`https://<your-app-name>.scm.azurewebsites.net/ZipDeploy`**  
+   (use the **same** **`.scm.`** host as Kudu). Sign in if prompted, then **upload** **`gems-api.zip`**.
+3. **Option B — File Manager:** in Kudu left menu → **File Manager** → open **`site`** → **`wwwroot`**. If the UI offers **drag a zip to extract & upload**, drop **`gems-api.zip`** so **`main.py`** ends up **directly under `wwwroot`** (not nested inside an extra `API` folder). If old placeholder files remain (e.g. `hostingstart.html`), you may remove them before or after upload, then **Restart** the Web App from the Portal **Overview**.
+
+4. Check **Kudu** home → **Logs** → **View last deployment**, or the Web App **Log stream**, for build errors. **Restart** the Web App if the new code does not load.
+
+**Note:** Portal labels can change slightly; if **`/ZipDeploy`** is not available in your tenant, use **File Manager** + zip drop, or **D.1** / **D.3**.
+
+### D.3 Azure App Service extension (VS Code / Cursor)
+
+1. Install the **Azure App Service** extension (same family of extensions as in VS Code; in Cursor, install from the Extensions view if available).
+2. Sign in to Azure from the extension.
+3. **Deploy** the **`API`** folder (or your **`gems-api.zip`** per the extension’s flow — follow the wizard). Confirm the deployed site root contains **`main.py`** at the **top level**, not double-nested folders.
+
+This is a **GUI** alternative to **`az webapp deploy`**; you still set **startup command** and **Environment variables** in the Portal (or CLI) as in §6–§7.
+
+---
+
+The **`.deployment`** file enables **`pip install -r requirements.txt`** during deployment on App Service (for zip-based deploys that run Oryx build).
 
 ---
 
@@ -302,7 +330,7 @@ Invoke-WebRequest -Uri "$base/export/goldanimalcharacteristics.csv" -Headers @{ 
 | Add/remove **allowlisted tables** | Azure **Environment variables** → edit **`ALLOWED_TABLES`** → Save. No redeploy. |
 | Rotate **`GEMS_API_KEY`** | Same; update Swagger **Authorize** and all scripts. |
 | Change **Databricks PAT** | Edit **`DATABRICKS_TOKEN`** in Azure. |
-| **Code** changes | Rebuild zip, **`az webapp deploy`** again. |
+| **Code** changes | Rebuild zip, redeploy (**§8** D.1 CLI, D.2 Portal/Kudu, or D.3 extension). |
 | Document table list for git (no secrets) | Edit **`API/.env.example`** in Cursor and commit. |
 
 ---
@@ -427,7 +455,7 @@ Run these from **Windows PowerShell** or **Cursor’s integrated terminal** (sam
 | 3 | `az account set --subscription ed150bce-3150-4fe4-b9e9-557ade4ccef5` | Makes all following `az` commands use **this** subscription. | Portal subscription picker; Cloud Shell same command. |
 | 4 | `az webapp config set --resource-group GEMS --name GEMS-API --startup-file "gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000"` | Sets **how Linux starts your app** (Gunicorn + Uvicorn workers, bind `0.0.0.0:8000`). | Portal → Web App → **Configuration** → **General settings** → **Startup Command** (same one-liner or `bash startup.sh`). |
 | 5 | `az webapp restart --resource-group GEMS --name GEMS-API` | Restarts the site so config and code reload cleanly. | Portal → Web App → **Overview** → **Restart**; often automatic after saving **Configuration**. |
-| 6 | `cd` to folder containing `gems-api.zip`, then `az webapp deploy --resource-group GEMS --name GEMS-API --src-path .\gems-api.zip --type zip` | Uploads the zip; App Service extracts and runs build (`pip install` via `.deployment`). | VS Code **Azure App Service** extension deploy; Portal **Deployment Center**; **Kudu** zip deploy. |
+| 6 | `cd` to folder containing `gems-api.zip`, then `az webapp deploy --resource-group GEMS --name GEMS-API --src-path .\gems-api.zip --type zip` | Uploads the zip; App Service extracts and runs build (`pip install` via `.deployment`). | **§8 D.2:** Kudu **`/ZipDeploy`** or **File Manager** → `site/wwwroot`; **§8 D.3:** **Azure App Service** extension. |
 
 After step 6, open **`https://<default-domain>/docs`** from **Overview** (see §9).
 
