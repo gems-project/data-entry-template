@@ -73,6 +73,8 @@ From the parent folder (where `gems-api.zip` lives):
 az webapp deploy --resource-group YOUR_RG --name YOUR_APP --src-path .\gems-api.zip --type zip
 ```
 
+**Without CLI:** Portal → Web App → **Advanced Tools** → **Go** → **`https://<app>.scm.azurewebsites.net/ZipDeploy`** or **File Manager** → `site/wwwroot` (zip drag-and-drop). Or **Azure App Service** extension in VS Code/Cursor. Details: **`README.md` §8 D.2–D.3**.
+
 ---
 
 ## Smoke tests after deploy
