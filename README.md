@@ -4,7 +4,7 @@ Standardized data collection framework for the **GEMS** (Global Enteric Methane 
 
 This repository contains:
 
-- **Data Entry Template** — Excel workbook with structured sheets for animal, feed, production, and emissions data.
+- **Data Entry Template documentation** — describes the standardized Excel workbook (distributed to contributors via SharePoint / Teams) with structured sheets for animal, feed, production, and emissions data.
 - **GEMS Gold Export API** — FastAPI service that exposes curated Databricks Unity Catalog tables as CSV downloads.
 - **Delta Sharing scripts** — Python and R clients for downloading shared tables using a credential file.
 - **Reference data** — Breed lists, NDF/ADF fraction definitions, and other lookup material.
@@ -15,7 +15,6 @@ This repository contains:
 
 ```
 data-entry-template/
-├── Data Entry Template.xlsx   # Main data-entry workbook
 ├── GEMS-roll-out-memo.md      # Contributor onboarding instructions
 ├── API/                       # GEMS Gold Export API (FastAPI)
 │   ├── main.py
@@ -33,8 +32,7 @@ data-entry-template/
 │   ├── breeds_updated.csv
 │   ├── ADF_fractions.md
 │   └── NDF_fractions.md
-├── gems-api.zip               # Pre-built API deployment archive
-└── data-entry-template.Rproj  # RStudio project file
+└── gems-api.zip               # Pre-built API deployment archive
 ```
 
 ---
@@ -76,7 +74,7 @@ flowchart TD
 
 ## Data Entry Template
 
-The **`Data Entry Template.xlsx`** workbook standardizes data collection across livestock experiments focused on methane emissions and related traits. Each workbook corresponds to **one study**. Contributors work in a shared online copy via Microsoft Teams / SharePoint (see [`GEMS-roll-out-memo.md`](GEMS-roll-out-memo.md) for onboarding details).
+The **Data Entry Template** workbook standardizes data collection across livestock experiments focused on methane emissions and related traits. Each workbook corresponds to **one study**. The workbook is distributed to contributors as a shared online copy via Microsoft Teams / SharePoint (not stored in this repository). See [`GEMS-roll-out-memo.md`](GEMS-roll-out-memo.md) for onboarding details.
 
 ### Workbook sheets
 
