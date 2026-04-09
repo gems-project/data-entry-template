@@ -103,35 +103,52 @@ Variable names match in both places: `DATABRICKS_*`, `GEMS_*`, `ALLOWED_TABLES`,
 
 ## 3. End-to-end deployment workflow
 
+### How GEMS-API actually went live (Azure-first)
+
+The first production deploy did **not** depend on running the API on a laptop. Secrets and table names were wired in **Azure**, the zip carried only code + build metadata, and we proved everything on the **live** URL. That is a valid path when you already trust the app in git and want the fastest path to a shared HTTPS endpoint.
+
+Roughly, this is the order that worked:
+
+1. **Portal** — Create a **Linux** Web App, **Python 3.11+**, pick region and plan (e.g. with **Always On** if you need it).
+2. **Subscription** — In **Cloud Shell** or **PowerShell**, run **`az login`**, then **`az account set --subscription <id>`** so deploy commands hit the right tenant (wrong default subscription causes mysterious **Authorization failed** errors).
+3. **Startup** — Set the **Gunicorn** one-liner (**§6**), e.g. with **`az webapp config set ... --startup-file "gunicorn main:app ..."`**. We did **not** rely on **`bash startup.sh`** for that first deploy; the script is optional if you point startup at it.
+4. **Portal** — **Environment variables** → add **`DATABRICKS_*`**, **`GEMS_*`**, **`ALLOWED_TABLES`**, **`GEMS_API_KEY`**, etc., then **Save** (values can match what you keep in **`API/.env`** for your own reference — that file never has to run locally first).
+5. **Cursor / PowerShell** — Build **`gems-api.zip`** from the **`API`** folder (**§8**): `main.py`, `requirements.txt`, `startup.sh`, `.deployment`, `.env.example` at the **root** of the zip, **no** `.env` / `.venv`.
+6. **PowerShell** — **`az webapp deploy`** from the folder that contains the zip (**§8 D.1**), then **Restart** the Web App if needed.
+7. **Browser** — Open **`https://<Default domain>/docs`** from **Overview** (not a different `*.azurewebsites.net` that might be another app). **Authorize** with **`X-API-Key`** = **`GEMS_API_KEY`**, then try **`/tables`** and **`/export/{table}.csv`**.
+
+After that, collaborators only need the **default domain** and the shared API key.
+
+### Diagram (same story, compact)
+
 ```mermaid
 flowchart TD
-  START([Start]) --> LOCAL[Configure API/.env from .env.example]
-  LOCAL --> RUNLOCAL[Run uvicorn locally / test /docs /export]
-  RUNLOCAL --> AZCREATE[Create Azure Web App Linux Python]
-  AZCREATE --> STARTUP[Set startup: bash startup.sh OR Gunicorn one-liner]
-  STARTUP --> APPVARS[Add Application settings env vars]
-  APPVARS --> ZIP[Zip API files no .env no .venv]
-  ZIP --> DEPLOY[CLI / Kudu ZipDeploy / App Service extension]
-  DEPLOY --> SAVE[Save settings Restart if needed]
-  SAVE --> TEST[Test https default domain /docs /tables /export]
-  TEST --> SHARE[Share URL + X-API-Key with collaborators]
-  SHARE([Done])
+  P1[Portal: Web App Linux Python] --> CLI1[az login + az account set]
+  CLI1 --> CLI2[az webapp config set: Gunicorn startup]
+  CLI2 --> P2[Portal: Environment variables — Save]
+  P2 --> ZIP[PowerShell: gems-api.zip from API folder]
+  ZIP --> CLI3[az webapp deploy]
+  CLI3 --> R[Restart if needed]
+  R --> OK[HTTPS Default domain /docs — key — tables and export]
 ```
 
-**Where each step happens**
+### If you want a safer rehearsal first (optional, recommended for new clones)
+
+Many teams still **copy `.env.example` → `.env`**, run **`uvicorn`** once (**§5**), and hit **`http://127.0.0.1:8000/docs`** before touching Azure. That catches typos in **`ALLOWED_TABLES`** or Databricks settings cheaply. The GEMS-API project simply went **straight to Azure** and debugged with **Log stream** and Swagger on the real host.
+
+### Where each step usually happens
 
 | Step | Where |
 |------|--------|
-| Copy `.env.example` → `.env`, edit secrets | **Cursor / local** — `API/` folder |
-| Local run & Swagger tests | **Your PC** — `http://127.0.0.1:8000/docs` |
-| Create Web App, pricing plan, region | **Azure Portal** (or CLI) |
-| Startup command | **Portal** Configuration → General settings, or **`az webapp config set`** |
-| `DATABRICKS_*`, `GEMS_*`, `ALLOWED_TABLES`, `GEMS_API_KEY` | **Azure Portal** → Web App → **Environment variables** → App settings |
-| Build `gems-api.zip` | **PowerShell** from repo (see §8) |
-| Upload / deploy zip | **§8:** **`az webapp deploy`**, **Kudu** **`/ZipDeploy`** or File Manager, or **Azure App Service** extension |
-| Confirm hostname | **Azure Portal** → Web App → **Overview** → **Default domain** (often `https://<name>-<suffix>.eastus-01.azurewebsites.net`) |
+| Optional: local `.env` + **uvicorn** smoke test | **Your PC** — **§5** |
+| Create Web App, plan, region | **Azure Portal** |
+| **`az account set`**, **`az webapp config set`**, **`az webapp deploy`** | **PowerShell** or **Cursor** terminal (**§14**); **Cloud Shell** for subscription fixes |
+| **`DATABRICKS_*`**, **`GEMS_*`**, **`ALLOWED_TABLES`**, **`GEMS_API_KEY`** | **Portal** → **Environment variables** |
+| Build **`gems-api.zip`** | **PowerShell** — **§8** |
+| Upload zip without CLI | **Kudu** **`/ZipDeploy`** or **File Manager** — **§8 D.2** |
+| Confirm the URL you share | **Overview** → **Default domain** |
 
-There is **no automatic sync** from GitHub to Azure Application settings unless you add CI/CD (e.g. GitHub Actions + `az webapp config appsettings set`). For this project, **production config is edited in Azure**; keep **`.env.example`** updated in git as **documentation only** (no real secrets).
+There is **no automatic sync** from GitHub to Azure Application settings unless you add CI/CD. **Production** values live in the Portal; keep **`.env.example`** in git as documentation only (no real secrets).
 
 ---
 
