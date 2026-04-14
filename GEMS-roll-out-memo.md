@@ -61,6 +61,15 @@ If additional team members need to assist with data entry:
 Only the **online shared version** is considered the official
 submission.
 
+The workbook is **partially protected**: only the cells intended for
+your entries are unlocked. Typically **rows 1–4**, **column A**, and
+**any columns after the last data-entry column** are locked; you should
+enter data **only in the unlocked cells** (for example, from row 5
+onward in the designated input columns). Because those other areas are
+locked, **some Excel features are unavailable there** (for example,
+editing labels or using certain functions in protected regions). That
+limitation is intentional so the template structure stays consistent.
+
 > Files completed or submitted outside the shared environment will
 > **not** be accepted.
 
