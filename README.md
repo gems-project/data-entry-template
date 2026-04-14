@@ -5,9 +5,9 @@ Standardized data collection framework for the **GEMS** (Global Enteric Methane 
 This repository contains:
 
 - **Data Entry Template documentation** — describes the standardized Excel workbook (distributed to contributors via SharePoint / Teams) with structured sheets for animal, feed, production, and emissions data.
-- **GEMS Gold Export API** — FastAPI service that exposes curated Databricks Unity Catalog tables as CSV downloads.
-- **Delta Sharing scripts** — Python and R clients for downloading shared tables using a credential file.
 - **Reference data** — Breed lists, NDF/ADF fraction definitions, and other lookup material.
+
+**API and Delta Sharing code** (FastAPI gold-table export, Python/R Delta Sharing clients) live in the companion repository **[gems-api](https://github.com/gems-project/gems-api)**. Use that repo for deployment, scripts, and technical READMEs. This repo may still include **`gems-api.zip`** as a pre-built API deployment archive when provided.
 
 ---
 
@@ -16,23 +16,13 @@ This repository contains:
 ```
 data-entry-template/
 ├── GEMS-roll-out-memo.md      # Contributor onboarding instructions
-├── API/                       # GEMS Gold Export API (FastAPI)
-│   ├── main.py
-│   ├── requirements.txt
-│   ├── .env.example
-│   ├── startup.sh
-│   ├── .deployment
-│   ├── README.md              # Full API & Azure deployment guide
-│   └── DEPLOY_AZURE.md        # Azure CLI quick reference
-├── Delta sharing/             # Scripts to download shared tables
-│   ├── load_shared_table.py
-│   ├── load_shared_table.R
-│   └── README.md
 ├── reference/                 # Supporting lookup data
 │   ├── breeds_updated.csv
 │   ├── ADF_fractions.md
 │   └── NDF_fractions.md
-└── gems-api.zip               # Pre-built API deployment archive
+├── gems-api.zip               # Optional pre-built API archive (when present)
+├── LICENSE
+└── README.md
 ```
 
 ---
@@ -69,6 +59,8 @@ flowchart TD
     API --> SCRIPTS
     DS --> ANALYSTS
 ```
+
+Implementation of the **API** and **Delta Sharing** clients is maintained in **[gems-api](https://github.com/gems-project/gems-api)**, not in this repository.
 
 ---
 
@@ -127,95 +119,11 @@ flowchart LR
 
 ---
 
-## GEMS Gold Export API
+## GEMS Gold Export API and Delta Sharing
 
-A read-only **FastAPI** service that lets authorized clients download curated **gold** tables from Databricks Unity Catalog as CSV files. Clients authenticate with a shared `X-API-Key` header; the server connects to a Databricks SQL warehouse using a PAT stored in environment variables.
+The **GEMS Gold Export API** (FastAPI CSV export from Unity Catalog) and **Delta Sharing** scripts (Python and R) are developed and documented in **[gems-api](https://github.com/gems-project/gems-api)**.
 
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant A as FastAPI (Azure)
-    participant D as Databricks SQL Warehouse
-    participant UC as Unity Catalog
-
-    C->>A: GET /export/{table}.csv + X-API-Key
-    A->>A: Validate key & allowlist
-    A->>D: SELECT * FROM catalog.schema.table
-    D->>UC: Read gold table
-    UC-->>D: Rows
-    D-->>A: Result set
-    A-->>C: Streamed CSV download
-```
-
-### Endpoints
-
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| `GET` | `/health` | None | Returns `ok` / `degraded` and `allowed_table_count`. |
-| `GET` | `/tables` | `X-API-Key` | Lists allowlisted table names. |
-| `GET` | `/export/{table}.csv` | `X-API-Key` | Downloads the table as a CSV file (streamed). |
-
-### Quick start (local)
-
-```powershell
-cd API
-copy .env.example .env        # fill in real values
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn main:app --reload --host 127.0.0.1 --port 8000
-```
-
-Then open `http://127.0.0.1:8000/docs` for the interactive Swagger UI.
-
-### Azure deployment
-
-The API is designed for **Azure App Service** (Linux, Python 3.11+). See [`API/README.md`](API/README.md) for the full deployment walkthrough and [`API/DEPLOY_AZURE.md`](API/DEPLOY_AZURE.md) for the CLI quick reference.
-
-### Environment variables
-
-| Variable | Purpose |
-|----------|---------|
-| `DATABRICKS_HOST` | Databricks workspace hostname (no `https://`). |
-| `DATABRICKS_HTTP_PATH` | SQL warehouse HTTP path. |
-| `DATABRICKS_TOKEN` | Databricks personal access token. |
-| `GEMS_CATALOG` / `GEMS_SCHEMA` | Unity Catalog location of gold tables. |
-| `ALLOWED_TABLES` | Comma-separated table names clients may export. |
-| `GEMS_API_KEY` | Shared secret sent by clients as `X-API-Key`. |
-| `MAX_EXPORT_ROWS` | Safety cap per export (default 100 000). |
-
----
-
-## Delta Sharing
-
-Python and R scripts that download shared tables using a **Databricks Delta Sharing** credential file (`config.share`). No browser login is required — the credential file contains a token, endpoint, and share reference.
-
-```mermaid
-flowchart LR
-    CF["config.share\n(credential)"] --> SC["Sharing Client"]
-    SC -->|"REST API"| DS["Databricks\nDelta Sharing Server"]
-    DS -->|"Parquet / Delta"| SC
-    SC --> XL["shared_table_exports/\n(.xlsx, .html)"]
-```
-
-| Script | Language | Outputs |
-|--------|----------|---------|
-| `load_shared_table.py` | Python | `.xlsx` and `.html` per table |
-| `load_shared_table.R` | R | `.xlsx` per table (Parquet-backed shares only) |
-
-### Usage
-
-1. Place `config.share` (provided privately) next to the scripts.
-2. Run one of:
-
-```bash
-python load_shared_table.py    # or python3
-Rscript load_shared_table.R
-```
-
-3. Outputs appear under `shared_table_exports/`.
-
-See [`Delta sharing/README.md`](Delta%20sharing/README.md) for detailed instructions, library usage examples, and troubleshooting.
+Clone that repository for local setup, Azure deployment steps, environment variables, and `config.share` usage. Do not expect `API/` or `Delta sharing/` directories in this **data-entry-template** repo.
 
 ---
 
