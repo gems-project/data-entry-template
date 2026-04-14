@@ -1,2 +1,0 @@
-# Force Unix line endings for shell scripts (CRLF breaks bash on Azure Linux)
-startup.sh text eol=lf
