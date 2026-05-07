@@ -1,15 +1,17 @@
 GEMS Data Entry Rollout – Contributor Instructions
 ================
 GEMS Coordination Team
-2026-02-04
+2026-05-07
 
 - [Purpose](#purpose)
 - [1. Study and Template Assignment](#1-study-and-template-assignment)
 - [2. File Access and Editing](#2-file-access-and-editing)
-- [3. Checklist and Completion
-  Tracking](#3-checklist-and-completion-tracking)
-- [4. Microsoft Account Access](#4-microsoft-account-access)
-- [5. Acknowledgment](#5-acknowledgment)
+- [3. GreenFeed Preliminary Data
+  Files](#3-greenfeed-preliminary-data-files)
+- [4. Checklist and Completion
+  Tracking](#4-checklist-and-completion-tracking)
+- [5. Microsoft Account Access](#5-microsoft-account-access)
+- [6. Acknowledgment](#6-acknowledgment)
 - [Contact](#contact)
 
 ## Purpose
@@ -62,7 +64,7 @@ Only the **online shared version** is considered the official
 submission.
 
 The workbook is **partially protected**: only the cells intended for
-your entries are unlocked. Typically **rows 1–4**, **column A**, and
+your entries are unlocked. Typically **rows 1-4**, **column A**, and
 **any columns after the last data-entry column** are locked; you should
 enter data **only in the unlocked cells** (for example, from row 5
 onward in the designated input columns). Because those other areas are
@@ -75,7 +77,36 @@ limitation is intentional so the template structure stays consistent.
 
 ------------------------------------------------------------------------
 
-## 3. Checklist and Completion Tracking
+## 3. GreenFeed Preliminary Data Files
+
+All workbooks ask for both the exact GreenFeed summarized data file name
+and the matching preliminary data file name.
+
+Generate **one preliminary workbook for each summarized data file**:
+
+1.  Go to <https://www.c-lockinc.com/> and sign in with your C-Lock
+    credentials.
+2.  Open the **Data** tab, then select **Processed Data And Support
+    Files**.
+3.  In the lower **Generate Workbook** box, select the same **GreenFeed
+    ID(s)** and **date range** shown in the summarized data file name.
+4.  Click **Generate Workbook** and wait a few seconds.
+5.  In the upper **Other Files** box, find the newly generated
+    preliminary workbook.
+6.  Copy the exact preliminary file name and paste it into the
+    `GreenFeedFileNameForPreliminaryData` column in the Data Entry
+    Workbook.
+
+Each preliminary file should correspond to exactly one summarized data
+file and should cover the same GreenFeed ID(s) and date range.
+
+We will provide the preliminary file names to C-Lock. If C-Lock is not
+able to send those files to GEMS, we will request that you provide the
+corresponding preliminary data in the Data Entry Workbook.
+
+------------------------------------------------------------------------
+
+## 4. Checklist and Completion Tracking
 
 Each workbook includes a **“Checklist”** sheet to record progress.
 
@@ -88,7 +119,10 @@ Each workbook includes a **“Checklist”** sheet to record progress.
 One of these must be indicated for **all sheets**, otherwise the data
 will not be processed.
 
-**Data entry should be completed within 30 days after you receive the Data Entry Workbook links.** Completion is defined by marking the **Status row for every sheet** as either `Completed` or `Not relevant` in the **Checklist** sheet.
+**Data entry should be completed within 30 days after you receive the
+Data Entry Workbook links.** Completion is defined by marking the
+**Status row for every sheet** as either `Completed` or `Not relevant`
+in the **Checklist** sheet.
 
 A **Notes** row is also available for leaving comments or questions for
 the coordination team.
@@ -103,14 +137,14 @@ After all sheets are marked as *Not relevant* or *Completed*:
 
 ------------------------------------------------------------------------
 
-## 4. Microsoft Account Access
+## 5. Microsoft Account Access
 
 If you cannot open the shared document, please create a **Microsoft
 account using the same email address** that received the shared link.
 
 ------------------------------------------------------------------------
 
-## 5. Acknowledgment
+## 6. Acknowledgment
 
 Contributors confirm that they have read and understood these
 instructions by **beginning data entry in the shared workbook**.
