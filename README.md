@@ -7,7 +7,7 @@ This repository contains:
 - **Data Entry Template documentation** — describes the standardized Excel workbook (distributed to contributors via SharePoint / Teams) with structured sheets for animal, feed, production, and emissions data.
 - **Reference data** — Breed lists, NDF/ADF fraction definitions, and other lookup material.
 
-**API and Delta Sharing code** (FastAPI gold-table export, Python/R Delta Sharing clients) live in the companion repository **[gems-api](https://github.com/gems-project/gems-api)**. Use that repo for deployment, scripts, and technical READMEs. This repo may still include **`gems-api.zip`** as a pre-built API deployment archive when provided.
+**Dashboard and API code** for gold-table data access live in the companion repository **[gems-api](https://github.com/gems-project/gems-api)**. Data access is now handled through the GEMS dashboard backed by the export API. Use that repo for deployment, scripts, and technical READMEs. This repo may still include **`gems-api.zip`** as a pre-built API deployment archive when provided.
 
 ---
 
@@ -42,25 +42,23 @@ flowchart TD
     end
 
     subgraph access ["Data access"]
+        DASH["GEMS Dashboard"]
         API["GEMS Gold Export API\n(FastAPI on Azure)"]
-        DS["Delta Sharing\n(Python / R scripts)"]
+        DASH --> API
     end
 
     subgraph consumers ["Consumers"]
-        BROWSER["Browser / Swagger"]
+        BROWSER["Dashboard users"]
         SCRIPTS["Notebooks & scripts"]
-        ANALYSTS["Research analysts"]
     end
 
     WB -->|"Submit via\nSharePoint / Teams"| INGEST
     GOLD --> API
-    GOLD --> DS
-    API --> BROWSER
+    DASH --> BROWSER
     API --> SCRIPTS
-    DS --> ANALYSTS
 ```
 
-Implementation of the **API** and **Delta Sharing** clients is maintained in **[gems-api](https://github.com/gems-project/gems-api)**, not in this repository.
+Implementation of the **dashboard** and **API** is maintained in **[gems-api](https://github.com/gems-project/gems-api)**, not in this repository.
 
 ---
 
@@ -119,11 +117,11 @@ flowchart LR
 
 ---
 
-## GEMS Gold Export API and Delta Sharing
+## GEMS Dashboard and Gold Export API
 
-The **GEMS Gold Export API** (FastAPI CSV export from Unity Catalog) and **Delta Sharing** scripts (Python and R) are developed and documented in **[gems-api](https://github.com/gems-project/gems-api)**.
+The **GEMS dashboard** is the current access point for curated gold-table data. It uses the **GEMS Gold Export API** to serve exports from Unity Catalog.
 
-Clone that repository for local setup, Azure deployment steps, environment variables, and `config.share` usage. Do not expect `API/` or `Delta sharing/` directories in this **data-entry-template** repo.
+The dashboard and API are developed and documented in **[gems-api](https://github.com/gems-project/gems-api)**. Clone that repository for local setup, Azure deployment steps, environment variables, and API usage. Do not expect dashboard or API source directories in this **data-entry-template** repo.
 
 ---
 
