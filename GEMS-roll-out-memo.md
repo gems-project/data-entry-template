@@ -88,8 +88,10 @@ Generate **one preliminary workbook for each summarized data file**:
     credentials.
 2.  Open the **Data** tab, then select **Processed Data And Support
     Files**.
-3.  In the lower **Generate Workbook** box, select the same **GreenFeed
-    ID(s)** and **date range** shown in the summarized data file name.
+3.  In the lower "Generate Workbook" section, select the same
+    **GreenFeed ID(s)**, the same **start date**, and an **end date**
+    that is one day later than the end date specified in the summarized
+    data file name.
 4.  Click **Generate Workbook** and wait a few seconds.
 5.  In the upper **Other Files** box, find the newly generated
     preliminary workbook.
